@@ -1,4 +1,4 @@
-#Core Purpose
+# Core Purpose
 Maintain a durable, queryable catalog of every file in a repository, including metadata and cryptographic checksums, and provide periodic health reports that detect corruption, missing files, unexpected changes, or anomalies.
 
 1. Baseline Catalog Requirements
