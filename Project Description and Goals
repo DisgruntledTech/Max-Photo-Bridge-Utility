@@ -1,0 +1,232 @@
+#Core Purpose
+Maintain a durable, queryable catalog of every file in a repository, including metadata and cryptographic checksums, and provide periodic health reports that detect corruption, missing files, unexpected changes, or anomalies.
+
+1. Baseline Catalog Requirements
+These are the characteristics your software should record for each file during the initial scan:
+
+Full file path — absolute path to ensure uniqueness.
+
+File name — stored separately for easier indexing.
+
+File size (bytes) — useful for quick change detection.
+
+Last modified timestamp — helps detect legitimate edits vs. corruption.
+
+Checksum (SHA‑256 recommended) — your primary integrity marker.
+
+Checksum generation date — timestamp of when the baseline was created.
+
+File type / MIME type — especially important for image repositories.
+
+Optional: EXIF hash for image files — detects corruption inside metadata.
+
+2. Repository Health Report Requirements
+Each time you run a new scan, the software should generate a report containing:
+
+Report date/time
+
+Total number of files scanned
+
+Total number of files added since baseline
+
+Total number of files removed since baseline
+
+Total number of files modified (checksum mismatch)
+
+List of corrupted files (checksum mismatch but same size)
+
+List of suspicious files (checksum mismatch + size change)
+
+List of missing files
+
+List of new files
+
+Optional: performance metrics (scan duration, throughput)
+
+3. Integrity Checking Logic
+Your comparison engine should include:
+
+Checksum comparison — SHA‑256 baseline vs. current.
+
+Size comparison — quick early indicator of corruption.
+
+Timestamp comparison — detect legitimate edits vs. silent corruption.
+
+Heuristic flags
+
+Same size + different checksum → likely bit rot
+
+Different size + different checksum → likely user modification
+
+Missing file → deletion or relocation
+
+New file → addition to repository
+
+4. Storage Format for Catalog
+Choose a durable, queryable format:
+
+Option A: SQLite database (recommended)
+Fast, portable, ACID‑compliant
+
+Easy to query
+
+Stores millions of records efficiently
+
+Perfect for checksum catalogs
+
+Option B: JSON or CSV
+Human‑readable
+
+Easy to export
+
+Not ideal for very large repositories
+
+Option C: Custom binary format
+Fastest
+
+Harder to maintain
+
+SQLite is the sweet spot for reliability and simplicity.
+
+5. Performance & Scalability Features
+To handle large repositories:
+
+Multithreaded hashing
+
+Incremental scanning (only hash changed files)
+
+Configurable scan depth
+
+Configurable file type filters
+
+Progress reporting
+
+Caching of previously computed checksums
+
+6. Optional Advanced Features
+These are powerful additions if you want a truly robust archival‑health system:
+
+A. Multiple checksum algorithms
+SHA‑256 (primary)
+
+CRC32 (fast secondary check)
+
+SHA‑512 (optional high‑security check)
+
+B. Redundant catalogs
+Store catalog copies in:
+
+Local disk
+
+NAS
+
+Cloud cold storage
+
+C. File signature verification
+Detect file type mismatches (e.g., JPEG renamed to PNG).
+
+D. EXIF integrity checking
+For photo archives:
+
+Hash EXIF separately
+
+Detect metadata corruption early
+
+E. Repository aging analytics
+Track:
+
+Rate of corruption
+
+File types most affected
+
+Drives most prone to bit rot
+
+F. Auto‑repair hooks
+If you store redundant copies, the software could:
+
+Automatically restore corrupted files
+
+Flag files for manual review
+
+7. User Interface / Output Requirements
+Whether CLI or GUI, include:
+
+Clear summary dashboard
+
+Detailed per‑file report
+
+Exportable health report (JSON, CSV, HTML)
+
+Color‑coded corruption indicators
+
+Search and filter tools
+
+Historical comparison view
+
+8. Configuration Options
+Your software should allow users to configure:
+
+Repository root path
+
+Checksum algorithm
+
+Scan frequency
+
+File type inclusion/exclusion
+
+Logging verbosity
+
+Output report location
+
+Thresholds for warnings
+
+9. Logging & Audit Trail
+Maintain logs for:
+
+Scan start/end times
+
+Errors encountered
+
+Files skipped
+
+Corruption events
+
+Catalog updates
+
+This is essential for long‑term reliability.
+
+10. Security Considerations
+Protect catalog from tampering
+
+Use read‑only scanning mode
+
+Validate file paths to avoid traversal attacks
+
+Optional: sign catalog with a private key
+
+Concise Summary
+Your software should:
+
+Catalog every file with path, size, timestamps, and SHA‑256 checksum
+
+Store a durable baseline
+
+Rescan periodically
+
+Compare checksums to detect bit rot
+
+Report corruption, missing files, and changes
+
+Provide configurable scanning, logging, and exportable reports
+
+If you want, I can also produce:
+
+A full architecture document
+
+A UML diagram
+
+A database schema
+
+A feature roadmap
+
+A C# class design tailored to your workflow
