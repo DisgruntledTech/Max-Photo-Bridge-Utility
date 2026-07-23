@@ -204,7 +204,7 @@ Validate file paths to avoid traversal attacks
 
 Optional: sign catalog with a private key
 
-Concise Summary
+# Concise Summary
 Your software should:
 
 Catalog every file with path, size, timestamps, and SHA‑256 checksum
@@ -218,15 +218,3 @@ Compare checksums to detect bit rot
 Report corruption, missing files, and changes
 
 Provide configurable scanning, logging, and exportable reports
-
-If you want, I can also produce:
-
-A full architecture document
-
-A UML diagram
-
-A database schema
-
-A feature roadmap
-
-A C# class design tailored to your workflow
